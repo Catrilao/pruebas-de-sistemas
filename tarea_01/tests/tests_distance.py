@@ -1,6 +1,6 @@
 import unittest
 
-from tarea01 import geo_location
+from src import geo_location
 
 
 class DistanceTest(unittest.TestCase):
