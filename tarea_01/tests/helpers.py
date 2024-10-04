@@ -19,6 +19,11 @@ def distance(source, destination, unit):
         },
     }
 
+    if unit == "km" or unit == "":
+        unit = "9036"
+    elif unit == "nm":
+        unit = "9030"
+
     url = "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/Geometry/GeometryServer/distance"
     params = {
         "sr": 4326,
@@ -37,9 +42,9 @@ def distance(source, destination, unit):
 
 if __name__ == "__main__":
     res = distance(
-        source=(-91, 30),
-        destination=(40, 30),
-        unit="9036",
+        source=(89, 30),
+        destination=(81, 33),
+        unit="km",
     )
 
     print(res)
