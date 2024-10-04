@@ -71,6 +71,49 @@ class TestCliente(unittest.TestCase):
             )
             mocked_print.assert_any_call("Distance unit:", cls.unidad_km)
 
+    def test_latitud_menor_90_negativo(self):
+        with patch("builtins.print") as mocked_print:
+            distance_client.main(
+                source=(self.latitud_menor_90_neg, self.latitud_valida),
+                destination=(self.latitud_valida, self.longitud_valida),
+                unit=self.unidad_km,
+            )
+
+            mocked_print.assert_any_call("Distance:", self.menos_uno)
+            mocked_print.assert_any_call("Distance unit:", self.unidad_invalida)
+
+    def test_latitud_mayor_90(self):
+        with patch("builtins.print") as mocked_print:
+            distance_client.main(
+                source=(self.latitud_mayor_90, self.latitud_valida),
+                destination=(self.latitud_valida, self.longitud_valida),
+                unit=self.unidad_km,
+            )
+
+            mocked_print.assert_any_call("Distance:", self.menos_uno)
+            mocked_print.assert_any_call("Distance unit:", self.unidad_invalida)
+
+    def test_longitud_menor_180_neg(self):
+        with patch("builtins.print") as mocked_print:
+            distance_client.main(
+                source=(self.latitud_valida, self.longitud_menor_180_neg),
+                destination=(self.latitud_valida, self.longitud_valida),
+                unit=self.unidad_km,
+            )
+
+            mocked_print.assert_any_call("Distance:", self.menos_uno)
+            mocked_print.assert_any_call("Distance unit:", self.unidad_invalida)
+
+    def test_longitud_mayor_180(self):
+        with patch("builtins.print") as mocked_print:
+            distance_client.main(
+                source=(self.latitud_valida, self.longitud_mayor_180),
+                destination=(self.latitud_valida, self.longitud_valida),
+                unit=self.unidad_km,
+            )
+
+            mocked_print.assert_any_call("Distance:", self.menos_uno)
+            mocked_print.assert_any_call("Distance unit:", self.unidad_invalida)
 
 if __name__ == "__main__":
     unittest.main()
