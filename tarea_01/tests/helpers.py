@@ -26,7 +26,7 @@ def distance(source, destination, unit):
         "geometry1": json.dumps(begin),
         "geometry2": json.dumps(end),
         "geodesic": True,
-        "f": "pjson",
+        "f": "json",
     }
 
     response = requests.get(url, params=params)
@@ -36,8 +36,10 @@ def distance(source, destination, unit):
 
 
 if __name__ == "__main__":
-    distance(
+    res = distance(
         source=(-91, 30),
         destination=(40, 30),
         unit="9036",
     )
+
+    print(res)
