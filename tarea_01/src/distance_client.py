@@ -5,7 +5,7 @@ from google.protobuf.json_format import MessageToJson
 import json
 
 
-def main(source, destination, unit):
+def main(source, destination, unit, print_message):
     with grpc.insecure_channel("localhost:50051") as channel:
         stub = pb2_grpc.DistanceServiceStub(channel)
 
@@ -16,23 +16,30 @@ def main(source, destination, unit):
             unit=unit,
         )
 
-        print(f"Message sent:\n{MessageToJson(message)}\n")
+        if print_message:
+            print(f"Message sent:\n{MessageToJson(message)}\n")
 
         # call remote method
         response = stub.geodesic_distance(message)
 
         try:
-            print("-----Response-----")
-            print("Distance:", json.loads(MessageToJson(response))["distance"])
-            print("Method:", json.loads(MessageToJson(response))["method"])
-            print("Distance unit:", json.loads(MessageToJson(response))["unit"])
+            response = {
+                "Distance": json.loads(MessageToJson(response))["distance"],
+                "Method": json.loads(MessageToJson(response))["method"],
+                "Distance unit": json.loads(MessageToJson(response))["unit"],
+            }
         except KeyError:
-            print("One or more key are missing!")
+            response = "One or more key are missing!"
+
+        return response
 
 
 if __name__ == "__main__":
-    main(
+    response = main(
         source=(81, 30),
         destination=(40, 30),
-        unit="km",
+        unit="",
+        print_message=True,
     )
+
+    print(response)
