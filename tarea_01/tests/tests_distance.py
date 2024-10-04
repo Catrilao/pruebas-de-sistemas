@@ -103,6 +103,8 @@ class DistanceTest(unittest.TestCase):
             distance_pred["Distance"], distance_true["distance"], delta=self.delta
         )
 
+        self.assertEqual(distance_pred["Distance unit"], self.unidad_km)
+
 
 if __name__ == "__main__":
     unittest.main()
