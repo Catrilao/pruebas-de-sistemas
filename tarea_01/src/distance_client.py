@@ -1,5 +1,5 @@
 import grpc
-import distance_unary_pb2_grpc as pb2_grpc
+import distance_grpc_service as pb2_grpc
 import distance_unary_pb2 as pb2
 from google.protobuf.json_format import MessageToJson
 import json

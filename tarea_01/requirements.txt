@@ -1,0 +1,10 @@
+certifi==2024.8.30
+charset-normalizer==3.3.2
+geographiclib==2.0
+geopy==2.4.1
+grpcio==1.66.2
+grpcio-tools==1.66.2
+idna==3.10
+protobuf==5.28.2
+requests==2.32.3
+urllib3==2.2.3

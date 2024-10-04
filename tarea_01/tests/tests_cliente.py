@@ -115,6 +115,5 @@ class TestCliente(unittest.TestCase):
             mocked_print.assert_any_call("Distance:", self.menos_uno)
             mocked_print.assert_any_call("Distance unit:", self.unidad_invalida)
 
-
 if __name__ == "__main__":
     unittest.main()
