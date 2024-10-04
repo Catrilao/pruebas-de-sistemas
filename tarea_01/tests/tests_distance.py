@@ -1,6 +1,7 @@
 import unittest
 
-from src import geo_location
+from src import distance_client
+import helpers
 
 
 class DistanceTest(unittest.TestCase):
@@ -12,7 +13,10 @@ class DistanceTest(unittest.TestCase):
         cls.longitud_mayor_180 = 181
         cls.latitud_valida = 50
         cls.longitud_valida = 50
-        cls.altura = 0
+        cls.unidad_km = "km"
+        cls.unidad_nm = "nm"
+        cls.delta = 10
+        cls.print_message = False
 
     @classmethod
     def tearDownClass(cls) -> None:
@@ -22,39 +26,82 @@ class DistanceTest(unittest.TestCase):
         del cls.longitud_mayor_180
         del cls.latitud_valida
         del cls.longitud_valida
-        del cls.altura
+        del cls.unidad_km
+        del cls.unidad_nm
+        del cls.delta
+        del cls.print_message
 
-    def test_latitud_menor_90_negativo(self):
-        with self.assertRaises(ValueError):
-            geo_location.Position(
-                self.latitud_menor_90_neg, self.longitud_valida, self.altura
-            )
+    def test_distance_inicio_final_iguales(self):
+        coordenadas = (self.latitud_valida, self.longitud_valida)
 
-        self.assertRaises(ValueError)
+        distance_test = distance_client.main(
+            source=coordenadas,
+            destination=coordenadas,
+            unit=self.unidad_km,
+            print_message=self.print_message,
+        )
 
-    def test_latitud_mayor_90(self):
-        with self.assertRaises(ValueError):
-            geo_location.Position(
-                self.latitud_mayor_90, self.longitud_valida, self.altura
-            )
+        self.assertEquals(0, distance_test["distance"])
 
-        self.assertRaises(ValueError)
+    def test_distance_nm(self):
+        begin = (self.latitud_valida, self.longitud_valida)
+        end = (self.latitud_valida + 20, self.longitud_valida + 10)
 
-    def test_longitud_mayor_180(self):
-        with self.assertRaises(ValueError):
-            geo_location.Position(
-                self.latitud_valida, self.longitud_mayor_180, self.altura
-            )
+        distance_pred = distance_client.main(
+            source=begin,
+            destination=end,
+            unit=self.unidad_nm,
+            print_message=self.print_message,
+        )
+        distance_true = helpers.distance(
+            source=begin,
+            destination=end,
+            unit=self.unidad_nm,
+        )
 
-        self.assertRaises(ValueError)
+        self.assertAlmostEqual(
+            distance_pred["Distance"], distance_true["distance"], delta=self.delta
+        )
 
-    def test_longitud_menor_180_negativo(self):
-        with self.assertRaises(ValueError):
-            geo_location.Position(
-                self.latitud_valida, self.longitud_menor_180_neg, self.altura
-            )
+    def test_distance_km(self):
+        begin = (self.latitud_valida, self.longitud_valida)
+        end = (self.latitud_valida + 20, self.longitud_valida + 10)
 
-        self.assertRaises(ValueError)
+        distance_pred = distance_client.main(
+            source=begin,
+            destination=end,
+            unit=self.unidad_km,
+            print_message=self.print_message,
+        )
+        distance_true = helpers.distance(
+            source=begin,
+            destination=end,
+            unit=self.unidad_km,
+        )
+
+        self.assertAlmostEqual(
+            distance_pred["Distance"], distance_true["distance"], delta=self.delta
+        )
+
+    def test_distance_sin_unidad(self):
+        begin = (self.latitud_valida, self.longitud_valida)
+        end = (self.latitud_valida + 20, self.longitud_valida + 10)
+
+        distance_pred = distance_client.main(
+            source=begin,
+            destination=end,
+            unit="",
+            print_message=self.print_message,
+        )
+        distance_true = helpers.distance(
+            source=begin,
+            destination=end,
+            unit="",
+        )
+
+        self.assertAlmostEqual(
+            distance_pred["Distance"], distance_true["distance"], delta=self.delta
+        )
 
 
 if __name__ == "__main__":
