@@ -1,5 +1,5 @@
 import grpc
-import distance_grpc_service as pb2_grpc
+import distance_unary_pb2_grpc as pb2_grpc
 import distance_unary_pb2 as pb2
 from google.protobuf.json_format import MessageToJson
 import json
@@ -25,7 +25,6 @@ def main(source, destination, unit):
             print("-----Response-----")
             print("Distance:", json.loads(MessageToJson(response))["distance"])
             print("Method:", json.loads(MessageToJson(response))["method"])
-            print("Method: geodesic")
             print("Distance unit:", json.loads(MessageToJson(response))["unit"])
         except KeyError:
             print("One or more key are missing!")
@@ -33,7 +32,7 @@ def main(source, destination, unit):
 
 if __name__ == "__main__":
     main(
-        source=(-91, 30),
+        source=(81, 30),
         destination=(40, 30),
         unit="km",
     )
